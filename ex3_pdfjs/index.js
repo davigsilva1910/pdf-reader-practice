@@ -19,7 +19,11 @@ async function main() {
     const pagina = await pdfDocument.getPage(4)
 
     const texto = await pagina.getTextContent()
+
+    // Retorno dos itens do pdf. Cada item, seja um '' ou palavra, cada um recebe uma posição dentro de um objeto
     const itens = texto.items
+
+    // console.log(itens)
 
     // [ 18, 0, 0, 18, 78, 699.515991 ]
     // [a, b, c, d, e, f]
@@ -44,16 +48,23 @@ async function main() {
     // console.log(linhas[239].join(" "))
     // finalizando agrupar linhas
 
+    // Objeto que vai armazenar todas as linhas
+    // '169': ['', 'which', ' ', 'cds'],
+    // '206': ['', 'Depois foi verificado de onde vinha o comando:'],
+    // '239': ['', 'npm', ' ', 'uninstall', ' ', '-g', ' ', '@sap/cds-dk'],
+    // '277': ['', 'Primeiro foi removida a instalação global:'],
+    // '306': ['', '6. Remoção das instalações conflitantes'],
     const linhas = {}
 
     for (const item of itens) {
-        const y = Math.round(item.transform[5])
+        const y = Math.round(item.transform[5]) // Math.round arredonda
 
+        // Se a linha atual não existir, adiciona dentro do objeto linhas
         if (!linhas[y]) {
             linhas[y] = [];
         }
 
-        linhas[y].push(item.str);
+        linhas[y].push(item.str); // Adiciona o texto para dentro da linha
     }
 
 
